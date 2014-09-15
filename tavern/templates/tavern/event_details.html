@@ -63,9 +63,11 @@
     <hr/>
     <h1> Event Attendees </h1>
     <ol>
+
         {% for attendee in event_attendees %}
             <li>{{ attendee.user.first_name }}</li>
             {% empty %}
+
             <li style="list-style:None;">Be the first attendee.</li>
         {% endfor %}
     </ol>
