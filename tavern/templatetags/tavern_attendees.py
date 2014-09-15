@@ -7,10 +7,15 @@ from tavern.models import get_users_not_attending_event
 register = template.Library()
 
 
-class TavernAttendeesUsers(template.Node):
+class EventTemplateTagMixin(template.Node):
     def __init__(self, event, var_name):
         self.event = template.Variable(event)
         self.var_name = var_name
+
+
+class TavernAttendeesUsers(EventTemplateTagMixin, template.Node):
+    def __init__(self, event, var_name):
+        super(TavernAttendeesUsers, self).__init__(event, var_name)
 
     def render(self, context):
         event = self.event.resolve(context)
@@ -21,8 +26,7 @@ class TavernAttendeesUsers(template.Node):
 
 class TavernAttendeesNotUsers(template.Node):
     def __init__(self, event, var_name):
-        self.event = template.Variable(event)
-        self.var_name = var_name
+        super(TavernAttendeesNotUsers, self).__init__(event, var_name)
 
     def render(self, context):
         event = self.event.resolve(context)
