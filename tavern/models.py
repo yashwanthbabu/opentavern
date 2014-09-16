@@ -145,3 +145,9 @@ def get_unjoined_groups(user):
 def get_groups(user):
     user_groups = TavernGroup.objects.filter(members=user)
     return user_groups
+
+
+def get_upcoming_events(user):
+    user_joined_groups = TavernGroup.objects.exclude(members=None)[0]
+    upcoming_events = user_joined_groups.event_set.filter(starts_at__gte=timezone.now())
+    return upcoming_events
