@@ -1,4 +1,4 @@
-import re
+# import re
 
 from django import template
 from tavern.models import get_upcoming_events
@@ -8,6 +8,8 @@ register = template.Library()
 
 class TavernUpcomingEvents(template.Node):
     def __init__(self, user, var_name):
+        """ Instantiating with the name of the variable
+        to be resolved and calling variable.resolve(context)"""
         self.user = template.Variable(user)
         self.var_name = var_name
 
@@ -20,7 +22,10 @@ class TavernUpcomingEvents(template.Node):
 
 @register.tag
 def get_tavern_upcoming_events(parser, token):
-    tag_name, arg = token.contents.split(None, 1)
-    m = re.search(r'for (\w+.\w+) as (\w+)', arg)
-    user, var_name = m.groups()
+    """ gets the upcoming events for
+     which user has been joined"""
+    args = token.split_contents()
+    var_name = args[-0]
+    arg_variable = args.index('request.user')
+    user = args[arg_variable]
     return TavernUpcomingEvents(user, var_name)
